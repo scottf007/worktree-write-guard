@@ -23,7 +23,7 @@ changed between this design and the shipped v0.1:
 
 | Plan claim | Status | Action |
 |---|---|---|
-| `agent_id` field present only in subagents | Documented (code.claude.com/docs/en/hooks.md), but issue [#23889](https://github.com/anthropics/claude-code/issues/23889) acknowledges silent failures in subagent/MCP contexts | Empirical test (§3.4) **stays mandatory**, not optional |
+| `agent_id` field present only in subagents | Documented (code.claude.com/docs/en/hooks.md). Issue [#23889](https://github.com/anthropics/claude-code/issues/23889) warned of silent failures, but **empirically verified working** on CC 2.1.x (2026-05-26, mailsort): main=`null`, subagent=`"a5b56fda72ad096eb"` | Discriminator confirmed. Re-test in new CC versions. |
 | Field name `agent_type` (not `subagent_type`) | Confirmed | No change |
 | Exit 2 vs `permissionDecision` JSON | Both canonical | Using exit 2 |
 | Plugin packaging via `plugin.json` + `hooks/hooks.json` | Confirmed | Shipped both — install path `~/.claude/plugins/worktree-write-guard/` |

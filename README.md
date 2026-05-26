@@ -6,9 +6,10 @@ worktree**. Stops the "absolute-path drift" class of bug where a
 sub-agent forgets the worktree boundary mid-run and clobbers the
 main checkout.
 
-Status: **v0.1 — needs empirical verification (§ Test) before relying
-on it.** See [worktree_write_guard_plan.md](./worktree_write_guard_plan.md)
-for the full design rationale.
+Status: **v0.1 — empirically verified on Claude Code 2.1.x (2026-05-26).**
+See [worktree_write_guard_plan.md](./worktree_write_guard_plan.md)
+for the full design rationale and § Empirical results below for the
+verification trace.
 
 ## What it catches
 
@@ -107,6 +108,40 @@ Claude Code version **before** relying on the enforcement hooks.
 
 8. Main-session `Write` still works (no false positives).
 9. Sub-agent `Write` *inside* its worktree still works.
+
+## Empirical results
+
+Tested 2026-05-26 in `~/projects/mailsort/` against Claude Code 2.1.x:
+
+| Probe | `agent_id` observed | Result |
+|---|---|---|
+| Main-session Write | `null` | ✓ hook fires; classifier says "main" |
+| Worktree-isolated subagent Write inside its worktree | `"a5b56fda72ad096eb"` (non-null) | ✓ hook fires; classifier says "subagent"; write allowed (inside CWD) |
+
+Subagent log line (raw):
+
+```json
+{
+  "session_id": "0cb4180b-7b96-4fe7-8917-19cb22a0a698",
+  "agent_id": "a5b56fda72ad096eb",
+  "agent_type": "general-purpose",
+  "tool_name": "Write",
+  "cwd": "/home/scott/projects/mailsort/.claude/worktrees/agent-a5b56fda72ad096eb",
+  "file_path": "/home/scott/projects/mailsort/.claude/worktrees/agent-a5b56fda72ad096eb/probe-sub.txt"
+}
+```
+
+Both halves of the discrimination check work. Issue #23889 (subagent
+hook silent failure) was **not** reproduced in this CC version.
+
+### Two install-procedure findings (worth knowing)
+
+1. **Hooks added to `.claude/settings.json` mid-session do not fire in
+   the current session.** Restart the CC session after installing.
+2. **`Agent(isolation: "worktree")` requires the parent session to
+   have started inside a git repo** — CC caches the git status at
+   session start. If you `git init` mid-session, dispatch still fails
+   until you restart.
 
 ## Audit log
 
