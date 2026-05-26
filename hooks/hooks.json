@@ -1,0 +1,24 @@
+{
+  "PreToolUse": [
+    {
+      "matcher": "Write|Edit|MultiEdit|NotebookEdit",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/enforce-worktree-writes.sh",
+          "timeout": 5
+        }
+      ]
+    },
+    {
+      "matcher": "Bash",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/enforce-worktree-bash.sh",
+          "timeout": 5
+        }
+      ]
+    }
+  ]
+}

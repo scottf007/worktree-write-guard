@@ -1,0 +1,11 @@
+{
+  "name": "worktree-write-guard",
+  "version": "0.1.0",
+  "description": "Blocks Claude Code sub-agents dispatched with Agent(isolation:'worktree') from writing files outside their worktree. Guards Write, Edit, MultiEdit, NotebookEdit, and the common Bash write patterns (>, >>, tee, cp, mv, rsync, dd).",
+  "author": {
+    "name": "Scott Fletcher",
+    "email": "scott@fletchcorp.com"
+  },
+  "homepage": "https://github.com/scott-fletcher/worktree-write-guard",
+  "license": "MIT"
+}
