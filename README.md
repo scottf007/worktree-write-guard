@@ -48,7 +48,7 @@ landlock). This hook closes ~95% of drift without one.
 ### As a plugin (cross-project, recommended)
 
 ```bash
-git clone https://github.com/scott-fletcher/worktree-write-guard \
+git clone https://github.com/scottf007/worktree-write-guard \
   ~/.claude/plugins/worktree-write-guard
 chmod +x ~/.claude/plugins/worktree-write-guard/hooks/*.sh
 ```
