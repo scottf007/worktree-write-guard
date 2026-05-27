@@ -56,6 +56,14 @@ fi
 # Canonicalize the worktree root too — defends against symlinked worktrees.
 WORKTREE_NORM=$(cd "$CWD" && pwd -P)
 
+# Allowlist: ~/.claude/memory/ is the llm_memory persistent store and
+# is writable from any subagent regardless of CWD. The delta-extractor
+# subagent (invoked by /narrative) writes deltas there from a fresh
+# CWD that is not the memory dir.
+case "$NORM_PATH" in
+  "$HOME"/.claude/memory/*) exit 0 ;;
+esac
+
 # Inside worktree? Allow.
 if [[ "$NORM_PATH" == "$WORKTREE_NORM"/* ]] || [[ "$NORM_PATH" == "$WORKTREE_NORM" ]]; then
   exit 0

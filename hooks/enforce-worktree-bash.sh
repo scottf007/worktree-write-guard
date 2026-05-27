@@ -73,9 +73,10 @@ done < <(echo "$COMMAND" | grep -oE '\bdd[[:space:]][^|&;]*\bof=/[^[:space:]|&;<
 
 VIOLATIONS=()
 for raw in "${CANDIDATES[@]}"; do
-  # Allowlist throwaway/system paths.
+  # Allowlist throwaway/system paths and the llm_memory persistent store.
   case "$raw" in
     /tmp/*|/tmp|/dev/*|/proc/*|/var/tmp/*) continue ;;
+    "$HOME"/.claude/memory/*) continue ;;
   esac
 
   PARENT=$(dirname "$raw")
